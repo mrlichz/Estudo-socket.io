@@ -61,13 +61,13 @@ const Index = () => {
 						<InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
 						<OutlinedInput
 							id="outlined-adornment-password"
-							type={!shown ? "text" : "password"}
+							type={shown ? "text" : "password"}
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 							endAdornment={
 								<InputAdornment position="end">
 									<IconButton aria-label="toggle password visibility" onClick={() => setShown(!shown)} onMouseDown={() => setShown(true)} edge="end">
-										{!shown ? <VisibilityOff /> : <Visibility />}
+										{shown ? <VisibilityOff /> : <Visibility />}
 									</IconButton>
 								</InputAdornment>
 							}
@@ -79,7 +79,7 @@ const Index = () => {
 						Login
 					</Button>
 					<p>
-						New to here? <span>Create an account</span>
+						New here? <span>Create an account</span>
 					</p>
 				</div>
 			</main>
