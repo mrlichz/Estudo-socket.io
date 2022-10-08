@@ -1,6 +1,7 @@
 import axios from "axios";
+import { baseURL } from "./services";
 
-const api = axios.create({ baseURL: "http://localhost:5050" });
+const api = axios.create({ baseURL: baseURL });
 
 export async function joinRoom(id) {
 	const r = await api.post(`/channel/${id}`);

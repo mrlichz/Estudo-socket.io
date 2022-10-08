@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { createMessage, getMessages, joinRoom } from "../../api/roomApi";
+import { baseURL } from "../../api/services";
 import "./index.sass";
 
-const socket = io.connect("http://localhost:5050");
+const socket = io.connect(baseURL);
 
 const Index = () => {
 	const [message, setMessage] = useState("");
