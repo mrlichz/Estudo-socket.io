@@ -4,6 +4,7 @@ import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
 import MessageController from "./controllers/messageController.js";
+import UserController from "./controllers/userController.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -19,6 +20,7 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 app.use(MessageController);
+app.use(UserController);
 
 io.on("connection", (socket) => {
 	socket.on("send", (data) => {

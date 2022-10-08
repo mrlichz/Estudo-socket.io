@@ -12,6 +12,10 @@ select id_user id,
 from tb_user_login
     inner join tb_user on tb_user_login.id_user = tb_user.id_user
 where tb_user_login.ds_password = md5('hash');
+-- Get user by email
+select id_user id
+from tb_user_login
+where ds_email = 'mrlichz0x01@hi.co';
 -- Create channel
 insert into tb_channel (id_channel, id_creator, nm_channel)
 values (1, 1, 'First');
