@@ -24,3 +24,14 @@ export async function createMessage(idChannel, message) {
 	const [answer] = await con.query(command, [message, idChannel]);
 	return answer.affectedRows;
 }
+
+export async function getMessages(idChannel) {
+	const command = `
+		select
+			id_message id,
+			ds_message message
+		from tb_message
+		where id_channel = ? `;
+	const [answer] = await con.query(command, [idChannel]);
+	return answer;
+}

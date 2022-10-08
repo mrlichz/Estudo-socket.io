@@ -8,4 +8,9 @@ values ('cool', 1);
 -- Get channel
 select id_channel
 from tb_channel
-where id_channel = ?
+where id_channel = ?;
+--Get messages
+select id_message id,
+    ds_message message
+from tb_message
+where id_channel = ?;
