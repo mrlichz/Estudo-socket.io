@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { Button, FormControl, TextField } from "@mui/material";
 import io from "socket.io-client";
 import { createMessage, getMessages, joinRoom } from "../../api/roomApi";
 import { baseURL } from "../../api/services";
+import { Title } from "../../styled";
+import localStorage from "local-storage";
+import { toast } from "react-toastify";
 import "./index.sass";
 
 const socket = io.connect(baseURL);
+
+const rnd = () => Math.random() * 9999;
 
 const Index = () => {
 	const [message, setMessage] = useState("");
 	const [room, setRoom] = useState("");
 	const [rec, setRec] = useState([]);
+	const [user] = useState(localStorage("user").id);
 
 	const send = () => {
 		if (!message || !message.trim()) return;
@@ -19,11 +26,13 @@ const Index = () => {
 			room,
 		});
 
-		const send = async () => {
+		const save = async () => {
 			const r = await createMessage(room, message);
-			if (r !== 204) alert("Couldn't save the message");
+			if (r !== 204) toast.warning("Couldn't save the message");
 		};
-		send();
+		save();
+		setRec([...rec, { id: rnd(), message, user: user }]);
+		setMessage("");
 	};
 
 	const join = async () => {
@@ -32,11 +41,11 @@ const Index = () => {
 			return;
 		}
 		const r = await joinRoom(room);
-		if (r !== 204) alert("Couldn't enter the room");
+		if (r !== 204) toast.error("Couldn't enter the room");
 		socket.emit("join", room);
 		const m = await getMessages(room);
 		setRec(m);
-		alert("Connected");
+		toast.success("Connected");
 	};
 
 	useEffect(() => {
@@ -46,18 +55,32 @@ const Index = () => {
 	});
 
 	return (
-		<div>
-			<h1>Chat</h1>
-			<input type="text" value={room} onChange={(e) => setRoom(e.target.value)} placeholder="Room" />
-			<button onClick={() => join()}>Join</button>
-			<br />
-			<input type="text" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Message" />
-			<button onClick={() => send()}>Send</button>
-			<section>
-				{rec.map((item) => (
-					<li key={item}>{item.message}</li>
-				))}
-			</section>
+		<div className="room page">
+			<main>
+				<Title color="#424242" font="4vw">
+					Chat
+				</Title>
+				<FormControl sx={{ m: 1, width: "100%", display: "flex", flexFlow: "row nowrap", alignItems: "center", gap: "10px", justifyContent: "space-between" }}>
+					<TextField margin="dense" type="number" label="Room" variant="outlined" value={room} onChange={(e) => setRoom(e.target.value)} />
+					<Button onClick={() => join()} variant="contained" sx={{ width: "30px", height: "53px", margin: "none" }}>
+						Join
+					</Button>
+				</FormControl>
+				<br />
+
+				<section className="feed">
+					{rec.map((item) => (
+						<li key={rnd()}>{item.message}</li>
+					))}
+				</section>
+
+				<FormControl sx={{ m: 1, width: "100%", display: "flex", flexFlow: "row nowrap", alignItems: "center", gap: "10px", justifyContent: "space-between" }}>
+					<TextField margin="dense" type="text" label="Message" variant="outlined" value={message} onChange={(e) => setMessage(e.target.value)} sx={{ width: "100%" }} />
+					<Button onClick={() => send()} variant="contained" sx={{ width: "30px", height: "53px", margin: "none" }}>
+						Send
+					</Button>
+				</FormControl>
+			</main>
 		</div>
 	);
 };

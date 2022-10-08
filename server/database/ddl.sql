@@ -16,7 +16,6 @@ create table tb_user_login (
 create table tb_channel (
     id_channel int unique primary key,
     id_creator int not null,
-    nm_channel varchar(20),
     dt_created date default(curdate()),
     foreign key (id_creator) references tb_user (id_user)
 );
