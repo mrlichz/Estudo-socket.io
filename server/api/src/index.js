@@ -19,11 +19,16 @@ app.use(cors());
 app.use(express.json());
 
 io.on("connection", (socket) => {
-	console.log(socket.id);
-
 	socket.on("send", (data) => {
-		console.log(data);
 		socket.broadcast.emit("receive", data);
+	});
+
+	socket.on("join", (data) => {
+		socket.join(data);
+	});
+
+	socket.on("send-room", (data) => {
+		socket.to(data.room).emit("receive-room", data);
 	});
 });
 
