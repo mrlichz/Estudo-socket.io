@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
+import { createMessage, getMessages, joinRoom } from "../../api/roomApi";
 import "./index.sass";
 
 const socket = io.connect("http://localhost:5050");
@@ -10,20 +11,38 @@ const Index = () => {
 	const [rec, setRec] = useState([]);
 
 	const send = () => {
+		if (!message || !message.trim()) return;
+
 		socket.emit("send-room", {
 			message,
 			room,
 		});
+
+		const send = async () => {
+			const r = await createMessage(room, message);
+			if (r !== 204) alert("Couldn't save the message");
+		};
+		send();
 	};
 
-	const join = () => {
+	const join = async () => {
+		if (isNaN(Number(room)) || room <= 0) {
+			alert("The inserted room is invalid");
+			return;
+		}
+		const r = await joinRoom(room);
+		if (r !== 204) alert("Couldn't enter the room");
 		socket.emit("join", room);
+		const m = await getMessages(room);
+		setRec(m);
+		alert("Connected");
 	};
 
 	useEffect(() => {
 		socket.on("receive-room", (data) => {
-			setRec([...rec, data.message]);
+			setRec([...rec, { message: data.message }]);
 		});
+		console.log(rec);
 	});
 
 	return (
@@ -36,7 +55,7 @@ const Index = () => {
 			<button onClick={() => send()}>Send</button>
 			<section>
 				{rec.map((item) => (
-					<li>{item}</li>
+					<li key={item}>{item.message}</li>
 				))}
 			</section>
 		</div>
