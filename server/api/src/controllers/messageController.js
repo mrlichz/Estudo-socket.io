@@ -10,7 +10,6 @@ server.post("/channel/:id", async (req, res) => {
 		if (!exists) {
 			const r = await createChannel(id);
 			if (r < 1) throw new Error("Cannot create this channel");
-			console.log("Channel created");
 		}
 		res.status(204).send();
 	} catch (err) {

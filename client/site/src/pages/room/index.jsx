@@ -43,7 +43,6 @@ const Index = () => {
 		socket.on("receive-room", (data) => {
 			setRec([...rec, { message: data.message }]);
 		});
-		console.log(rec);
 	});
 
 	return (
