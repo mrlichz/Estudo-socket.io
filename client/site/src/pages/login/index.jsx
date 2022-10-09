@@ -83,7 +83,7 @@ const Index = () => {
 						Login
 					</Button>
 					<p>
-						New here? <span>Create an account</span>
+						New here? <span onClick={() => navigate("/signup")}>Create an account</span>
 					</p>
 				</div>
 			</main>
