@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, FormControl, TextField } from "@mui/material";
 import io from "socket.io-client";
 import { createMessage, getMessages, joinRoom } from "../../api/roomApi";
@@ -6,6 +6,7 @@ import { baseURL } from "../../api/services";
 import { Title } from "../../styled";
 import localStorage from "local-storage";
 import { toast } from "react-toastify";
+import ChatItem from "../../components/chat";
 import "./index.sass";
 
 const socket = io.connect(baseURL);
@@ -14,9 +15,9 @@ const rnd = () => Math.random() * 9999;
 
 const Index = () => {
 	const [message, setMessage] = useState("");
-	const [room, setRoom] = useState("");
+	const [room, setRoom] = useState(1);
 	const [rec, setRec] = useState([]);
-	const [user] = useState(localStorage("user").id);
+	const lastMsg = useRef(null);
 
 	const send = () => {
 		if (!message || !message.trim()) return;
@@ -31,7 +32,7 @@ const Index = () => {
 			if (r !== 204) toast.warning("Couldn't save the message");
 		};
 		save();
-		setRec([...rec, { id: rnd(), message, user: user }]);
+		setRec([...rec, { id: rnd(), message, local: true }]);
 		setMessage("");
 	};
 
@@ -54,6 +55,10 @@ const Index = () => {
 		});
 	});
 
+	useEffect(() => {
+		lastMsg.current?.scrollIntoView();
+	}, [rec]);
+
 	return (
 		<div className="room page">
 			<main>
@@ -70,8 +75,9 @@ const Index = () => {
 
 				<section className="feed">
 					{rec.map((item) => (
-						<li key={rnd()}>{item.message}</li>
+						<ChatItem key={rnd()} user={item.userId} message={item.message} local={item.local} />
 					))}
+					<div ref={lastMsg} />
 				</section>
 
 				<FormControl sx={{ m: 1, width: "100%", display: "flex", flexFlow: "row nowrap", alignItems: "center", gap: "10px", justifyContent: "space-between" }}>

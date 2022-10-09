@@ -26,6 +26,7 @@ const Index = () => {
 		} catch (err) {
 			if (err.response) toast.warn(err.response.data.err);
 			else toast.warn(err.message);
+			setLoading(false)
 		}
 	}
 

@@ -30,7 +30,8 @@ export async function getMessages(idChannel) {
 		select
 			id_message id,
 			ds_message message,
-			id_user userId
+			id_user userId,
+			dt_sent date
 		from tb_message
 		where id_channel = ? `;
 	const [answer] = await con.query(command, [idChannel]);
