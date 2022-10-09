@@ -22,11 +22,14 @@ const Index = () => {
 			if (!email || !email.trim() || !password || !password.trim()) throw new Error("All the fields need to be filled");
 			const r = await userLogin(email, password);
 			localStorage("user", r);
-			setTimeout(() => navigate("/room"), 2500);
+			setTimeout(() => {
+				navigate("/room");
+				window.location.reload(false);
+			}, 2500);
 		} catch (err) {
 			if (err.response) toast.warn(err.response.data.err);
 			else toast.warn(err.message);
-			setLoading(false)
+			setLoading(false);
 		}
 	}
 

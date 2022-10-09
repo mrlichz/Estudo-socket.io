@@ -4,7 +4,6 @@ import io from "socket.io-client";
 import { createMessage, getMessages, joinRoom } from "../../api/roomApi";
 import { baseURL } from "../../api/services";
 import { Title } from "../../styled";
-import localStorage from "local-storage";
 import { toast } from "react-toastify";
 import ChatItem from "../../components/chat";
 import "./index.sass";
