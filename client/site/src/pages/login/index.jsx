@@ -39,7 +39,6 @@ const Index = () => {
 				color="#2d95b1"
 				loading={loading}
 				cssOverride={{
-					transition: "1s ease-in-out",
 					position: "absolute",
 					left: "50%",
 					top: "50%",
