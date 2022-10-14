@@ -1,5 +1,5 @@
-import axios from "axios";
-import { baseURL, token } from "./services";
+import axios from 'axios';
+import { baseURL, token } from './services';
 
 const api = axios.create({ baseURL: baseURL });
 
@@ -9,7 +9,7 @@ export async function joinRoom(id) {
 		{},
 		{
 			headers: {
-				"x-access-token": token,
+				'x-access-token': token,
 			},
 		}
 	);
@@ -24,7 +24,7 @@ export async function createMessage(id, message) {
 		},
 		{
 			headers: {
-				"x-access-token": token,
+				'x-access-token': token,
 			},
 		}
 	);

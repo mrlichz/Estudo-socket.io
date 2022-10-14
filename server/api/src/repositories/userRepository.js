@@ -1,4 +1,4 @@
-import con from "./connection.js";
+import con from './connection.js';
 
 export async function newUser(name, email, password) {
 	const command = `

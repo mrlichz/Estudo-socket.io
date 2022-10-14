@@ -1,10 +1,10 @@
-import axios from "axios";
-import { baseURL } from "./services";
+import axios from 'axios';
+import { baseURL } from './services';
 
 const api = axios.create({ baseURL: baseURL });
 
 export async function userLogin(email, password) {
-	const r = await api.post("/user/login", {
+	const r = await api.post('/user/login', {
 		email,
 		password,
 	});
@@ -12,7 +12,7 @@ export async function userLogin(email, password) {
 }
 
 export async function newUser(name, email, password) {
-	const r = await api.post("/user", {
+	const r = await api.post('/user', {
 		name,
 		email,
 		password,

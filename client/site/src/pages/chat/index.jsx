@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
-import { baseURL } from "../../api/services";
-import "./index.sass";
+import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+import { baseURL } from '../../api/services';
+import './index.sass';
 
 const socket = io.connect(baseURL);
 
 const Index = () => {
-	const [message, setMessage] = useState("");
+	const [message, setMessage] = useState('');
 	const [rec, setRec] = useState([]);
 
 	const send = () => {
-		socket.emit("send", {
+		socket.emit('send', {
 			message: message,
 		});
 	};
 
 	useEffect(() => {
-		socket.on("receive", (data) => {
+		socket.on('receive', data => {
 			setRec([...rec, data.message]);
 		});
 	});
@@ -24,10 +24,14 @@ const Index = () => {
 	return (
 		<div>
 			<h1>Chat</h1>
-			<input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
+			<input
+				type='text'
+				value={message}
+				onChange={e => setMessage(e.target.value)}
+			/>
 			<button onClick={() => send()}>Send</button>
 			<section>
-				{rec.map((item) => (
+				{rec.map(item => (
 					<li>{item}</li>
 				))}
 			</section>
